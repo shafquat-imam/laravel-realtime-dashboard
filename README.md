@@ -37,3 +37,55 @@ first-party WebSocket solution (Reverb) and Livewire 3.
 - 📱 **Responsive** — full functionality on tablet and mobile
 
 ## Architecture
+
+## Dashboard Widgets
+
+| Widget | Update interval | Data source |
+|---|---|---|
+| Revenue today | Real-time | Orders table |
+| Active sessions | Real-time | Cache (Redis) |
+| Orders per hour | 60s | Query + cache |
+| Top products | 5 min | Aggregated query |
+| Error rate | Real-time | Logs table |
+| Conversion funnel | 15 min | Computed metric |
+
+## Tech Stack
+
+| | |
+|---|---|
+| Framework | Laravel 11 |
+| Frontend | Livewire 3 + Tailwind CSS |
+| WebSockets | Laravel Reverb |
+| Charts | ApexCharts |
+| Auth | Filament (admin), Sanctum (API) |
+| Cache | Redis |
+| Queue | Database (local), Horizon (prod) |
+
+## Setup
+
+```bash
+git clone https://github.com/shafquatimam/laravel-realtime-dashboard.git
+cd laravel-realtime-dashboard
+
+composer install && npm install
+
+cp .env.example .env
+php artisan key:generate
+
+php artisan migrate --seed
+php artisan reverb:start &   # WebSocket server
+php artisan queue:work &     # Background jobs
+npm run dev &
+php artisan serve
+```
+
+Open `http://localhost:8000` — the dashboard self-seeds with
+demo data every 5 seconds so you can see live updates immediately.
+
+**Demo login:**
+- Admin: `admin@demo.com` / `password`
+
+---
+
+**Built by [Shafquat Imam](https://yourname.dev)**
+Senior Laravel Developer · Available for freelance
